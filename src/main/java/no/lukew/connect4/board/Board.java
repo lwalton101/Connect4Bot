@@ -3,7 +3,7 @@ package no.lukew.connect4.board;
 import java.util.Arrays;
 
 public class Board {
-    private Piece[][] boardState;
+    private final Piece[][] boardState;
 
     private static final int BOARD_WIDTH = 7;
     private static final int BOARD_HEIGHT = 6;
