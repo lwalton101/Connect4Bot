@@ -2,6 +2,7 @@ package no.lukew;
 
 import no.lukew.connect4.board.Board;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -10,17 +11,15 @@ public class Main {
 
         Board board = new Board();
         board.display();
+        int input = 0;
         while(!board.isGameOver()){
-            board.placePiece(0);
-            board.placePiece(1);
-            board.placePiece(2);
-            board.placePiece(3);
+            board.placePiece(input);
+
             if(!board.isGameOver()){
                 board.display();
                 Scanner scanner = new Scanner(System.in);
-                scanner.nextLine();
+                input = scanner.nextInt();
             }
-
         }
         board.display();
         System.out.println(board.getPieceWinner() + " won the game");

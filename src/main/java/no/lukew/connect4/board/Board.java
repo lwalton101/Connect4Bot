@@ -1,10 +1,12 @@
 package no.lukew.connect4.board;
 
+import java.util.Arrays;
+
 public class Board {
     private Piece[][] boardState;
 
-    private final int BOARD_WIDTH = 7;
-    private final int BOARD_HEIGHT = 6;
+    private static final int BOARD_WIDTH = 7;
+    private static final int BOARD_HEIGHT = 6;
 
     private boolean isGameOver = false;
     private Piece pieceWinner = Piece.NONE;
@@ -13,10 +15,8 @@ public class Board {
 
     public Board() {
         boardState = new Piece[BOARD_WIDTH][BOARD_HEIGHT];
-        for (int x = 0; x < BOARD_WIDTH; x++) {
-            for (int y = 0; y < BOARD_HEIGHT; y++) {
-                setPiece(x, y, Piece.NONE);
-            }
+        for (Piece[] column : boardState) {
+            Arrays.fill(column, Piece.NONE);
         }
     }
 
@@ -48,6 +48,16 @@ public class Board {
         return false;
     }
 
+    private boolean isBoardFull(){
+        for (Piece[] column : boardState) {
+            if (Arrays.asList(column).contains(Piece.NONE)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private int countPieces(int x, int y, int xDirection, int yDirection, Piece piece) {
         int count = 0;
 
@@ -66,18 +76,16 @@ public class Board {
         return count;
     }
 
-    public void placePiece(int columnIndex) {
-        if(this.isGameOver()){
-            return;
+    public boolean placePiece(int columnIndex) {
+        if(isGameOver()){
+            return false;
         }
-        if (columnIndex > BOARD_WIDTH - 1) {
-            System.out.println("Piece being placed in column " + columnIndex + " that is invalid");
-            return;
+        if (columnIndex < 0 || columnIndex > BOARD_WIDTH - 1) {
+            return false;
         }
 
         if (!canPlaceInColumn(columnIndex)) {
-            System.out.println("Piece being placed in column " + columnIndex + " that is full");
-            return;
+            return false;
         }
 
         int rowIndex = getNextPlaceInColumn(columnIndex);
@@ -87,14 +95,17 @@ public class Board {
         if (doesPieceWin(columnIndex, rowIndex)) {
             isGameOver = true;
             pieceWinner = nextPiece;
-            return;
+            return true;
         }
 
-        if (nextPiece == Piece.ONE) {
-            nextPiece = Piece.TWO;
-        } else if (nextPiece == Piece.TWO) {
-            nextPiece = Piece.ONE;
+        if(isBoardFull()){
+            isGameOver = true;
+            return true;
         }
+
+        nextPiece = nextPiece.opposite();
+
+        return true;
     }
 
     public boolean isGameOver() {
