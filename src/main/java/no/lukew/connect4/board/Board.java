@@ -2,6 +2,13 @@ package no.lukew.connect4.board;
 
 import java.util.Arrays;
 
+/**
+ * Represents the state of a Connect Four game board.
+ * The board manages piece placement, player turns,
+ * win detection, and game completion states.
+ * Board coordinates use zero-based indexing.
+ * The first index represents the column and the second represents the row.
+ */
 public class Board {
     private final Piece[][] boardState;
 
@@ -13,6 +20,9 @@ public class Board {
 
     private Piece nextPiece = Piece.ONE;
 
+    /**
+     * Creates an empty Connect Four board ready for play.
+     */
     public Board() {
         boardState = new Piece[BOARD_WIDTH][BOARD_HEIGHT];
         for (Piece[] column : boardState) {
@@ -76,6 +86,14 @@ public class Board {
         return count;
     }
 
+    /**
+     * Attempts to place the current player's piece into the selected column.
+     * The piece is placed in the lowest available row in the column.
+     * If the move results in a win or draw, the game will be marked as complete.
+     *
+     * @param columnIndex zero-based column index where the piece should be placed
+     * @return the result of the placement attempt
+     */
     public PlacementResult placePiece(int columnIndex) {
         if(isGameOver()){
             return PlacementResult.GameOver;
@@ -108,10 +126,19 @@ public class Board {
         return PlacementResult.Success;
     }
 
+    /**
+     * Checks if the game has ended
+     * @return true - if the game is over, false - if the game can still be played
+     */
     public boolean isGameOver() {
         return isGameOver;
     }
 
+    /**
+     * Gets the winning piece.
+     *
+     * @return the winning player's piece, or Piece.NONE if there is no winner
+     */
     public Piece getPieceWinner() {
         return pieceWinner;
     }
@@ -149,6 +176,10 @@ public class Board {
         boardState[x][y] = piece;
     }
 
+    /**
+     * Outputs a quick debug view of the board to stdout
+     * for debugging, or if using without making your own UI.
+     */
     public void display() {
         StringBuilder boardString = new StringBuilder();
         for (int y = 0; y < BOARD_HEIGHT; y++) {
