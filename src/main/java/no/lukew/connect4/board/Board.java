@@ -128,7 +128,7 @@ public class Board {
     }
 
     private Piece getPiece(int x, int y) {
-        if (x < 0 || x > BOARD_WIDTH || y < 0 || y > BOARD_HEIGHT) {
+        if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT){
             return null;
         }
         return boardState[x][y];
