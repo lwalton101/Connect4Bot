@@ -6,6 +6,8 @@ public class Board {
     private final int BOARD_WIDTH = 7;
     private final int BOARD_HEIGHT = 6;
 
+    private Piece nextPiece = Piece.ONE;
+
     public Board() {
         boardState = new Piece[BOARD_WIDTH][BOARD_HEIGHT];
         for (int x = 0; x < BOARD_WIDTH; x++) {
@@ -13,8 +15,49 @@ public class Board {
                 setPiece(x, y, Piece.NONE);
             }
         }
+    }
 
-        setPiece(3, 0, Piece.ONE);
+    public void placePiece(int columnIndex){
+        if(columnIndex > BOARD_WIDTH - 1){
+            System.out.println("Piece being placed in column " + columnIndex + " that is invalid");
+            return;
+        }
+
+        if(!canPlaceInColumn(columnIndex)){
+            System.out.println("Piece being placed in column " + columnIndex + " that is full");
+            return;
+        }
+
+        int rowIndex = getNextPlaceInColumn(columnIndex);
+        setPiece(columnIndex, rowIndex, nextPiece);
+
+        if(nextPiece == Piece.ONE){
+            nextPiece = Piece.TWO;
+        } else if (nextPiece == Piece.TWO) {
+            nextPiece = Piece.ONE;
+        }
+    }
+
+    private boolean canPlaceInColumn(int columnIndex){
+        Piece[] column = getColumn(columnIndex);
+
+        return column[0] == Piece.NONE;
+    }
+
+    private int getNextPlaceInColumn(int columnIndex){
+        Piece[] column = getColumn(columnIndex);
+        int lastEmptyIndex = 0;
+        for (int i = 0; i < column.length; i++) {
+            if(column[i] == Piece.NONE){
+                lastEmptyIndex = i;
+            }
+        }
+
+        return lastEmptyIndex;
+    }
+
+    private Piece[] getColumn(int column){
+        return boardState[column];
     }
 
     private Piece getPiece(int x, int y) {

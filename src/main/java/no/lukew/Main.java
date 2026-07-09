@@ -8,5 +8,10 @@ public class Main {
 
         Board board = new Board();
         board.display();
+
+        board.placePiece(0);
+        board.display();
+        board.placePiece(1);
+        board.display();
     }
 }
