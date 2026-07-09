@@ -1,6 +1,7 @@
 package no.lukew;
 
 import no.lukew.connect4.board.Board;
+import no.lukew.connect4.board.PlacementResult;
 
 import java.util.Scanner;
 
@@ -12,7 +13,11 @@ public class Main {
         board.display();
         int input = 0;
         while(!board.isGameOver()){
-            board.placePiece(input);
+            PlacementResult result = board.placePiece(input);
+
+            if(result != PlacementResult.Success){
+                System.out.println("Placement failed because: " + result.name());
+            }
 
             if(!board.isGameOver()){
                 board.display();

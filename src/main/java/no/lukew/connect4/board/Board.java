@@ -76,16 +76,16 @@ public class Board {
         return count;
     }
 
-    public boolean placePiece(int columnIndex) {
+    public PlacementResult placePiece(int columnIndex) {
         if(isGameOver()){
-            return false;
+            return PlacementResult.GameOver;
         }
         if (columnIndex < 0 || columnIndex > BOARD_WIDTH - 1) {
-            return false;
+            return PlacementResult.InvalidColumn;
         }
 
         if (!canPlaceInColumn(columnIndex)) {
-            return false;
+            return PlacementResult.ColumnFull;
         }
 
         int rowIndex = getNextPlaceInColumn(columnIndex);
@@ -95,17 +95,17 @@ public class Board {
         if (doesPieceWin(columnIndex, rowIndex)) {
             isGameOver = true;
             pieceWinner = nextPiece;
-            return true;
+            return PlacementResult.Success;
         }
 
         if(isBoardFull()){
             isGameOver = true;
-            return true;
+            return PlacementResult.Success;
         }
 
         nextPiece = nextPiece.opposite();
 
-        return true;
+        return PlacementResult.Success;
     }
 
     public boolean isGameOver() {
