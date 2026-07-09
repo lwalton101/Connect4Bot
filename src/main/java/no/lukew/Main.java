@@ -2,7 +2,6 @@ package no.lukew;
 
 import no.lukew.connect4.board.Board;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
