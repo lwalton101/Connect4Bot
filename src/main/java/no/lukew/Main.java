@@ -1,6 +1,6 @@
 package no.lukew;
 
-import no.lukew.connect4.board.Board;
+import no.lukew.connect4.board.ArrayBoard;
 import no.lukew.connect4.board.PlacementResult;
 
 import java.util.Scanner;
@@ -9,7 +9,7 @@ public class Main {
     static void main() {
         System.out.println("Hello World!");
 
-        Board board = new Board();
+        ArrayBoard board = new ArrayBoard();
         board.display();
         int input = 0;
         while(!board.isGameOver()){

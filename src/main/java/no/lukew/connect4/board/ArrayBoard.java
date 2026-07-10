@@ -9,7 +9,7 @@ import java.util.Arrays;
  * Board coordinates use zero-based indexing.
  * The first index represents the column and the second represents the row.
  */
-public class Board {
+public class ArrayBoard {
     private final Piece[][] boardState;
 
     private static final int BOARD_WIDTH = 7;
@@ -23,7 +23,7 @@ public class Board {
     /**
      * Creates an empty Connect Four board ready for play.
      */
-    public Board() {
+    public ArrayBoard() {
         boardState = new Piece[BOARD_WIDTH][BOARD_HEIGHT];
         for (Piece[] column : boardState) {
             Arrays.fill(column, Piece.NONE);
