@@ -6,13 +6,15 @@ public interface Board {
 
     boolean isGameOver();
     boolean isBoardFull();
-    String toNotation();
-    String toDebugString();
     boolean canPlaceInColumn(int columnIndex);
     PlacementResult placePiece(int columnIndex);
     int getNumberOfMoves();
     Piece getWinner();
     boolean doesPieceWin(int columnIndex);
-
-
+    String toNotation();
+    /**
+     * Outputs a quick debug view of the board to stdout
+     * for debugging, or if using without making your own UI.
+     */
+    String toDebugString();
 }

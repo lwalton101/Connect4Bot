@@ -11,9 +11,11 @@ import java.util.Arrays;
  */
 public class ArrayBoard implements Board {
     private final Piece[][] boardState;
-    private final Piece[] turns;
+    private int[] moves;
     Piece nextPiece = Piece.ONE;
     boolean gameWon = false;
+
+    int moveCount = 0;
     /**
      * Creates an empty Connect Four board ready for play.
      */
@@ -23,8 +25,22 @@ public class ArrayBoard implements Board {
             Arrays.fill(column, Piece.NONE);
         }
 
-        turns = new Piece[BOARD_WIDTH * BOARD_HEIGHT];
-        Arrays.fill(turns, Piece.NONE);
+        moves = new int[BOARD_WIDTH * BOARD_HEIGHT];
+        Arrays.fill(moves, -1);
+    }
+
+    public ArrayBoard(String notation){
+        boardState = new Piece[BOARD_WIDTH][BOARD_HEIGHT];
+        for (Piece[] column : boardState) {
+            Arrays.fill(column, Piece.NONE);
+        }
+
+        this.moves = new int[BOARD_WIDTH * BOARD_HEIGHT];
+        Arrays.fill(this.moves, -1);
+
+        for (char move: notation.toCharArray()){
+            placePiece(Character.getNumericValue(move));
+        }
     }
 
     public boolean doesPieceWin(int columnIndex) {
@@ -69,12 +85,14 @@ public class ArrayBoard implements Board {
 
     @Override
     public String toNotation() {
-        return "";
-    }
-
-    @Override
-    public String toDebugString() {
-        return "";
+        StringBuilder notationBuilder = new StringBuilder();
+        for(int move : moves){
+            if(move == -1){
+                break;
+            }
+            notationBuilder.append(move);
+        }
+        return notationBuilder.toString();
     }
 
     private int countPieces(int x, int y, int xDirection, int yDirection, Piece piece) {
@@ -122,6 +140,9 @@ public class ArrayBoard implements Board {
         int rowIndex = getNextPlaceInColumn(columnIndex);
         setPiece(columnIndex, rowIndex, nextPiece);
 
+        moves[moveCount] = columnIndex;
+        moveCount++;
+
         nextPiece = nextPiece.opposite();
 
         return PlacementResult.Success;
@@ -129,7 +150,7 @@ public class ArrayBoard implements Board {
 
     @Override
     public int getNumberOfMoves() {
-        return 0;
+        return moveCount;
     }
 
     @Override
@@ -191,18 +212,14 @@ public class ArrayBoard implements Board {
         boardState[x][y] = piece;
     }
 
-    /**
-     * Outputs a quick debug view of the board to stdout
-     * for debugging, or if using without making your own UI.
-     */
-    public void display() {
+
+    public String toDebugString() {
         StringBuilder boardString = new StringBuilder();
         for (int y = 0; y < BOARD_HEIGHT; y++) {
             StringBuilder rowString = new StringBuilder();
             for (int x = 0; x < BOARD_WIDTH; x++) {
                 Piece piece = getPiece(x, y);
                 if (piece == null) {
-                    System.out.println("Invalid Piece Found " + x + "," + y);
                     continue;
                 }
                 rowString.append(piece.toChar());
@@ -210,6 +227,6 @@ public class ArrayBoard implements Board {
             rowString.append("\n");
             boardString.append(rowString);
         }
-        System.out.println(boardString);
+        return boardString.toString();
     }
 }

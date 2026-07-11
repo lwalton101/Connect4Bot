@@ -10,12 +10,11 @@ public class Main {
         System.out.println("Hello World!");
 
         ArrayBoard board = new ArrayBoard();
-        board.display();
 
         while(!board.isGameOver()){
             int input = -1;
             if(!board.isGameOver()){
-                board.display();
+                System.out.println(board.toDebugString());
                 Scanner scanner = new Scanner(System.in);
                 input = scanner.nextInt();
             }
@@ -26,7 +25,7 @@ public class Main {
                 System.out.println("Placement failed because: " + result.name());
             }
         }
-        board.display();
+        System.out.println(board.toDebugString());
         System.out.println(board.getPieceWinner() + " won the game");
     }
 }
