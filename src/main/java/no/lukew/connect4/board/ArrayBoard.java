@@ -9,17 +9,11 @@ import java.util.Arrays;
  * Board coordinates use zero-based indexing.
  * The first index represents the column and the second represents the row.
  */
-public class ArrayBoard {
+public class ArrayBoard implements Board {
     private final Piece[][] boardState;
-
-    private static final int BOARD_WIDTH = 7;
-    private static final int BOARD_HEIGHT = 6;
-
-    private boolean isGameOver = false;
-    private Piece pieceWinner = Piece.NONE;
-
-    private Piece nextPiece = Piece.ONE;
-
+    private final Piece[] turns;
+    Piece nextPiece = Piece.ONE;
+    boolean gameWon = false;
     /**
      * Creates an empty Connect Four board ready for play.
      */
@@ -28,10 +22,15 @@ public class ArrayBoard {
         for (Piece[] column : boardState) {
             Arrays.fill(column, Piece.NONE);
         }
+
+        turns = new Piece[BOARD_WIDTH * BOARD_HEIGHT];
+        Arrays.fill(turns, Piece.NONE);
     }
 
-    private boolean doesPieceWin(int x, int y) {
-        Piece piece = getPiece(x, y);
+    public boolean doesPieceWin(int columnIndex) {
+
+        Piece piece = nextPiece;
+        int rowIndex = getNextPlaceInColumn(columnIndex);
         if (piece == Piece.NONE) {
             return false;
         }
@@ -46,9 +45,9 @@ public class ArrayBoard {
         for (int[] direction : directions) {
             int count = 1;
 
-            count += countPieces(x, y, direction[0], direction[1], piece);
+            count += countPieces(columnIndex, rowIndex, direction[0], direction[1], piece);
 
-            count += countPieces(x, y, -direction[0], -direction[1], piece);
+            count += countPieces(columnIndex, rowIndex, -direction[0], -direction[1], piece);
 
             if (count >= 4) {
                 return true;
@@ -58,7 +57,7 @@ public class ArrayBoard {
         return false;
     }
 
-    private boolean isBoardFull(){
+    public boolean isBoardFull(){
         for (Piece[] column : boardState) {
             if (Arrays.asList(column).contains(Piece.NONE)) {
                 return false;
@@ -66,6 +65,16 @@ public class ArrayBoard {
         }
 
         return true;
+    }
+
+    @Override
+    public String toNotation() {
+        return "";
+    }
+
+    @Override
+    public String toDebugString() {
+        return "";
     }
 
     private int countPieces(int x, int y, int xDirection, int yDirection, Piece piece) {
@@ -106,24 +115,26 @@ public class ArrayBoard {
             return PlacementResult.ColumnFull;
         }
 
+        if(doesPieceWin(columnIndex)){
+            gameWon = true;
+        }
+
         int rowIndex = getNextPlaceInColumn(columnIndex);
         setPiece(columnIndex, rowIndex, nextPiece);
-
-
-        if (doesPieceWin(columnIndex, rowIndex)) {
-            isGameOver = true;
-            pieceWinner = nextPiece;
-            return PlacementResult.Success;
-        }
-
-        if(isBoardFull()){
-            isGameOver = true;
-            return PlacementResult.Success;
-        }
 
         nextPiece = nextPiece.opposite();
 
         return PlacementResult.Success;
+    }
+
+    @Override
+    public int getNumberOfMoves() {
+        return 0;
+    }
+
+    @Override
+    public Piece getWinner() {
+        return null;
     }
 
     /**
@@ -131,7 +142,11 @@ public class ArrayBoard {
      * @return true - if the game is over, false - if the game can still be played
      */
     public boolean isGameOver() {
-        return isGameOver;
+        if(isBoardFull()){
+            return true;
+        }
+
+        return gameWon;
     }
 
     /**
@@ -140,10 +155,10 @@ public class ArrayBoard {
      * @return the winning player's piece, or Piece.NONE if there is no winner
      */
     public Piece getPieceWinner() {
-        return pieceWinner;
+        return nextPiece.opposite();
     }
 
-    private boolean canPlaceInColumn(int columnIndex) {
+    public boolean canPlaceInColumn(int columnIndex) {
         Piece[] column = getColumn(columnIndex);
 
         return column[0] == Piece.NONE;

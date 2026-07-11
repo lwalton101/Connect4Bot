@@ -11,18 +11,19 @@ public class Main {
 
         ArrayBoard board = new ArrayBoard();
         board.display();
-        int input = 0;
+
         while(!board.isGameOver()){
-            PlacementResult result = board.placePiece(input);
-
-            if(result != PlacementResult.Success){
-                System.out.println("Placement failed because: " + result.name());
-            }
-
+            int input = -1;
             if(!board.isGameOver()){
                 board.display();
                 Scanner scanner = new Scanner(System.in);
                 input = scanner.nextInt();
+            }
+
+            PlacementResult result = board.placePiece(input);
+
+            if(result != PlacementResult.Success){
+                System.out.println("Placement failed because: " + result.name());
             }
         }
         board.display();
