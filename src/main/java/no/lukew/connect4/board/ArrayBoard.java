@@ -46,7 +46,7 @@ public class ArrayBoard extends Board {
 
     @Override
     public boolean doesPieceWin(int columnIndex) {
-        Piece piece = nextPiece;
+        Piece piece = getNextPiece();
         int rowIndex = getNextPlaceInColumn(columnIndex);
         if (piece == Piece.NONE) {
             return false;

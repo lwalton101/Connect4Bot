@@ -8,8 +8,6 @@ public abstract class Board {
     int[] moveHistory = new int[BOARD_WIDTH * BOARD_HEIGHT];
     int moveCount = 0;
     boolean gameWon = false;
-    Piece nextPiece = Piece.ONE;
-
     public static <B extends Board> B fromNotation(Supplier<B> emptyBoardFactory, String notation) {
         B board = emptyBoardFactory.get();
         for (char move : notation.toCharArray()) {
@@ -32,16 +30,18 @@ public abstract class Board {
         if (doesPieceWin(columnIndex)) {
             gameWon = true;
         }
-        dropPiece(columnIndex, nextPiece);
+        dropPiece(columnIndex, getNextPiece());
 
         moveHistory[moveCount++] = columnIndex;
-        nextPiece = nextPiece.opposite();
 
         return PlacementResult.Success;
     }
 
     public final int getNumberOfMoves() {
         return moveCount;
+    }
+    public final Piece getNextPiece(){
+        return Piece.values()[getNumberOfMoves() % 2 + 1];
     }
 
     public final boolean isBoardFull() {
@@ -80,7 +80,7 @@ public abstract class Board {
      * @return the winning player's piece, or Piece.NONE if there is no winner
      */
     public final Piece getWinner(){
-        return gameWon ? nextPiece.opposite() : Piece.NONE;
+        return gameWon ? getNextPiece().opposite() : Piece.NONE;
     }
 
     //IMPLEMENTATION SPECIFIC
