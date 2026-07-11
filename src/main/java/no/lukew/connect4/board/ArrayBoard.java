@@ -9,7 +9,7 @@ import java.util.Arrays;
  * Board coordinates use zero-based indexing.
  * The first index represents the column and the second represents the row.
  */
-public class ArrayBoard implements Board {
+public class ArrayBoard extends Board {
     private final Piece[][] boardState;
     private int[] moves;
     Piece nextPiece = Piece.ONE;
@@ -43,6 +43,7 @@ public class ArrayBoard implements Board {
         }
     }
 
+    @Override
     public boolean doesPieceWin(int columnIndex) {
 
         Piece piece = nextPiece;
@@ -73,6 +74,7 @@ public class ArrayBoard implements Board {
         return false;
     }
 
+    @Override
     public boolean isBoardFull(){
         for (Piece[] column : boardState) {
             if (Arrays.asList(column).contains(Piece.NONE)) {
