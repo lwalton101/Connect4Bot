@@ -12,12 +12,9 @@ public class Main {
         ArrayBoard board = new ArrayBoard();
 
         while(!board.isGameOver()){
-            int input = -1;
-            if(!board.isGameOver()){
-                System.out.println(board.toDebugString());
-                Scanner scanner = new Scanner(System.in);
-                input = scanner.nextInt();
-            }
+            System.out.println(board.toDebugString());
+            Scanner scanner = new Scanner(System.in);
+            int input = scanner.nextInt();
 
             PlacementResult result = board.placePiece(input);
 
