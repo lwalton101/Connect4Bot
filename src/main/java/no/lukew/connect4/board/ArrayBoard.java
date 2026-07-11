@@ -155,7 +155,7 @@ public class ArrayBoard implements Board {
 
     @Override
     public Piece getWinner() {
-        return null;
+        return nextPiece.opposite();
     }
 
     /**
@@ -169,16 +169,6 @@ public class ArrayBoard implements Board {
 
         return gameWon;
     }
-
-    /**
-     * Gets the winning piece.
-     *
-     * @return the winning player's piece, or Piece.NONE if there is no winner
-     */
-    public Piece getPieceWinner() {
-        return nextPiece.opposite();
-    }
-
     public boolean canPlaceInColumn(int columnIndex) {
         Piece[] column = getColumn(columnIndex);
 

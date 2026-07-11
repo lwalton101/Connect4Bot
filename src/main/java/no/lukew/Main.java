@@ -26,6 +26,6 @@ public class Main {
             }
         }
         System.out.println(board.toDebugString());
-        System.out.println(board.getPieceWinner() + " won the game");
+        System.out.println(board.getWinner() + " won the game");
     }
 }

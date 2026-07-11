@@ -9,6 +9,11 @@ public interface Board {
     boolean canPlaceInColumn(int columnIndex);
     PlacementResult placePiece(int columnIndex);
     int getNumberOfMoves();
+    /**
+     * Gets the winning piece.
+     *
+     * @return the winning player's piece, or Piece.NONE if there is no winner
+     */
     Piece getWinner();
     boolean doesPieceWin(int columnIndex);
     String toNotation();
