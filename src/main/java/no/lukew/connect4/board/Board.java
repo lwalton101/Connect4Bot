@@ -3,11 +3,11 @@ package no.lukew.connect4.board;
 import java.util.function.Supplier;
 
 public abstract class Board {
-    int BOARD_WIDTH = 7;
-    int BOARD_HEIGHT = 6;
-    int[] moveHistory = new int[BOARD_WIDTH * BOARD_HEIGHT];
-    int moveCount = 0;
-    boolean gameWon = false;
+    public static final int BOARD_WIDTH = 7;
+    public static final int BOARD_HEIGHT = 6;
+    private final int[] moveHistory = new int[BOARD_WIDTH * BOARD_HEIGHT];
+    private int moveCount = 0;
+    private boolean gameWon = false;
     public static <B extends Board> B fromNotation(Supplier<B> emptyBoardFactory, String notation) {
         B board = emptyBoardFactory.get();
         for (char move : notation.toCharArray()) {
@@ -23,6 +23,11 @@ public abstract class Board {
         if (isGameOver()) {
             return PlacementResult.GameOver;
         }
+
+        if(columnIndex < 0 || columnIndex > BOARD_WIDTH){
+            return PlacementResult.InvalidColumn;
+        }
+
         if (!canPlaceInColumn(columnIndex)) {
             return PlacementResult.ColumnFull;
         }
@@ -40,8 +45,8 @@ public abstract class Board {
     public final int getNumberOfMoves() {
         return moveCount;
     }
-    public final Piece getNextPiece(){
-        return Piece.values()[getNumberOfMoves() % 2 + 1];
+    public final Piece getNextPiece() {
+        return moveCount % 2 == 0 ? Piece.ONE : Piece.TWO;
     }
 
     public final boolean isBoardFull() {
