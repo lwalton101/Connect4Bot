@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 public abstract class Board {
     public static final int BOARD_WIDTH = 7;
     public static final int BOARD_HEIGHT = 6;
-    private final int[] moveHistory = new int[BOARD_WIDTH * BOARD_HEIGHT];
+    public int[] moveHistory = new int[BOARD_WIDTH * BOARD_HEIGHT];
     private int moveCount = 0;
     private boolean gameWon = false;
 
