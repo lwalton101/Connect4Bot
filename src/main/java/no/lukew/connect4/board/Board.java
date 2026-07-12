@@ -34,7 +34,7 @@ public abstract class Board {
             return PlacementResult.GameOver;
         }
 
-        if(columnIndex < 0 || columnIndex > BOARD_WIDTH){
+        if(columnIndex < 0 || columnIndex >= BOARD_WIDTH){
             return PlacementResult.InvalidColumn;
         }
 
