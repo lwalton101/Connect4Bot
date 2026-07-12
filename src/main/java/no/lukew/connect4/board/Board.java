@@ -8,6 +8,16 @@ public abstract class Board {
     private final int[] moveHistory = new int[BOARD_WIDTH * BOARD_HEIGHT];
     private int moveCount = 0;
     private boolean gameWon = false;
+
+    public Board(){
+
+    }
+
+    protected Board(Board other) {
+        System.arraycopy(other.moveHistory, 0, moveHistory, 0, other.moveHistory.length);
+        moveCount = other.moveCount;
+        gameWon = other.gameWon;
+    }
     public static <B extends Board> B fromNotation(Supplier<B> emptyBoardFactory, String notation) {
         B board = emptyBoardFactory.get();
         for (char move : notation.toCharArray()) {
@@ -93,4 +103,5 @@ public abstract class Board {
     public abstract boolean canPlaceInColumn(int columnIndex);
     public abstract Piece getPiece(int x, int y);
     public abstract boolean doesPieceWin(int columnIndex);
+    public abstract Board withMove(int columnIndex);
 }
