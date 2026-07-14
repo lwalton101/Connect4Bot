@@ -1,6 +1,15 @@
 package no.lukew.connect4.board;
 
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.junit.jupiter.api.Assertions.*;
 abstract class BoardTest {
     protected abstract Board createBoard();
@@ -166,5 +175,33 @@ abstract class BoardTest {
 
         assertTrue(board.isGameOver());
         assertEquals(Piece.ONE, board.getWinner());
+    }
+
+    @Test
+    void doesTestSetSucceed(){
+        File testSet = new File("src/test/resources/games.csv");
+        try {
+            try (Stream<String> lines = Files.lines(testSet.toPath())) {
+                List<List<String>> records = lines.map(line -> Arrays.asList(line.split(",")))
+                        .skip(1).toList();
+
+                for (List<String> record : records){
+                    String notation = record.get(0);
+                    int winningPieceIndex = Integer.parseInt(record.get(1));
+                    Piece winningPiece = Piece.values()[winningPieceIndex];
+
+                    Board board = createBoard();
+
+                    for (char column : notation.toCharArray()){
+                        board.placePiece(Character.getNumericValue(column));
+                    }
+
+                    assertTrue(board.isGameOver());
+                    assertEquals(winningPiece, board.getWinner());
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
