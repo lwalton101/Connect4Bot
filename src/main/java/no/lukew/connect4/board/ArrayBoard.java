@@ -15,6 +15,15 @@ public class ArrayBoard extends Board {
         }
     }
 
+    private ArrayBoard(ArrayBoard other) {
+        super(other);
+
+        boardState = new Piece[BOARD_WIDTH][BOARD_HEIGHT];
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            boardState[x] = other.boardState[x].clone();
+        }
+    }
+
     @Override
     protected void dropPiece(int columnIndex, Piece piece) {
         int rowIndex = getNextPlaceInColumn(columnIndex);
@@ -72,6 +81,13 @@ public class ArrayBoard extends Board {
         }
 
         return false;
+    }
+
+    @Override
+    public Board withMove(int columnIndex) {
+        ArrayBoard copy = new ArrayBoard(this);
+        copy.placePiece(columnIndex);
+        return copy;
     }
 
     private int countPieces(int x, int y, int xDirection, int yDirection, Piece piece) {
