@@ -51,6 +51,8 @@ public class Main {
                 }
             }
             board.placePiece(bestColumn);
+
+            System.out.println("Searched " + solver.positionsSearched + " positions");
         }
         System.out.println(board.toDebugString());
         System.out.println(board.toNotation());

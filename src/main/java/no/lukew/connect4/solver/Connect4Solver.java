@@ -5,7 +5,10 @@ import no.lukew.connect4.board.Piece;
 
 public class Connect4Solver {
 
+    public int positionsSearched = 0;
+
     public int score(Board board, Piece myPiece){
+        positionsSearched += 1;
         int score = 0;
         if(board.isGameOver()){
             if(board.getWinner() == myPiece){
@@ -71,6 +74,7 @@ public class Connect4Solver {
     }
 
     public int[] evaluate(Board board){
+        positionsSearched = 0;
         int[] scores = new int[Board.BOARD_WIDTH];
         for (int i = 0; i < Board.BOARD_WIDTH; i++) {
             if(!board.canPlaceInColumn(i)){
