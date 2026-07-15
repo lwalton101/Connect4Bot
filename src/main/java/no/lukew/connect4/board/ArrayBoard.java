@@ -91,7 +91,7 @@ public class ArrayBoard extends Board {
     }
 
     @Override
-    public int[][] getWindowCounts() {
+    public int[][] getWindowCounts(Piece mine) {
         int[][] counts = new int[69][2];
         int index = 0;
 
@@ -102,7 +102,6 @@ public class ArrayBoard extends Board {
                 {1, -1}   // diagonal /
         };
 
-        Piece mine = getNextPiece();
         Piece theirs = mine.opposite();
 
         for (int x = 0; x < BOARD_WIDTH; x++) {

@@ -104,5 +104,5 @@ public abstract class Board {
     public abstract Piece getPiece(int x, int y);
     public abstract boolean doesPieceWin(int columnIndex);
     public abstract Board withMove(int columnIndex);
-    public abstract int[][] getWindowCounts();
+    public abstract int[][] getWindowCounts(Piece mine);
 }
