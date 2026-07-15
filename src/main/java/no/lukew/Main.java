@@ -32,17 +32,6 @@ public class Main {
 
             Connect4Solver solver = new Connect4Solver();
 
-            StringBuilder scoreString = new StringBuilder();
-            for (int i = 0; i < Board.BOARD_WIDTH; i++) {
-                if(!board.canPlaceInColumn(i)){
-                    continue;
-                }
-
-                Board newBoard = board.withMove(i);
-                scoreString.append(solver.score(newBoard, Piece.TWO)).append(",");
-            }
-            System.out.println(scoreString);
-
             int[] scores = solver.evaluate(board);
             int bestColumn = 0;
             for (int i = 1; i < scores.length; i++) {
