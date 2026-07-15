@@ -90,6 +90,61 @@ public class ArrayBoard extends Board {
         return copy;
     }
 
+    @Override
+    public int[][] getWindowCounts() {
+        int[][] counts = new int[69][2];
+        int index = 0;
+
+        int[][] directions = {
+                {1, 0},   // horizontal
+                {0, 1},   // vertical
+                {1, 1},   // diagonal \
+                {1, -1}   // diagonal /
+        };
+
+        Piece mine = getNextPiece();
+        Piece theirs = mine.opposite();
+
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            for (int y = 0; y < BOARD_HEIGHT; y++) {
+
+                for (int[] direction : directions) {
+
+                    int endX = x + direction[0] * 3;
+                    int endY = y + direction[1] * 3;
+
+                    // Does this 4-piece window fit?
+                    if (endX < 0 || endX >= BOARD_WIDTH ||
+                            endY < 0 || endY >= BOARD_HEIGHT) {
+                        continue;
+                    }
+
+                    int mineCount = 0;
+                    int theirCount = 0;
+
+                    for (int i = 0; i < 4; i++) {
+                        Piece piece = getPiece(
+                                x + direction[0] * i,
+                                y + direction[1] * i
+                        );
+
+                        if (piece == mine) {
+                            mineCount++;
+                        } else if (piece == theirs) {
+                            theirCount++;
+                        }
+                    }
+
+                    counts[index][0] = mineCount;
+                    counts[index][1] = theirCount;
+                    index++;
+                }
+            }
+        }
+
+        return counts;
+    }
+
     private int countPieces(int x, int y, int xDirection, int yDirection, Piece piece) {
         int count = 0;
 
