@@ -4,6 +4,7 @@ import no.lukew.connect4.board.ArrayBoard;
 import no.lukew.connect4.board.Board;
 import no.lukew.connect4.board.Piece;
 import no.lukew.connect4.board.PlacementResult;
+import no.lukew.connect4.solver.Connect4Solver;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,6 +29,28 @@ public class Main {
             if(result != PlacementResult.Success){
                 System.out.println("Placement failed because: " + result.name());
             }
+
+            Connect4Solver solver = new Connect4Solver();
+
+            StringBuilder scoreString = new StringBuilder();
+            for (int i = 0; i < Board.BOARD_WIDTH; i++) {
+                if(!board.canPlaceInColumn(i)){
+                    continue;
+                }
+
+                Board newBoard = board.withMove(i);
+                scoreString.append(solver.score(newBoard, Piece.TWO)).append(",");
+            }
+            System.out.println(scoreString);
+
+            int[] scores = solver.evaluate(board);
+            int bestColumn = 0;
+            for (int i = 1; i < scores.length; i++) {
+                if (scores[i] > scores[bestColumn]) {
+                    bestColumn = i;
+                }
+            }
+            board.placePiece(bestColumn);
         }
         System.out.println(board.toDebugString());
         System.out.println(board.toNotation());
