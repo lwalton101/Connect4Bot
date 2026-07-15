@@ -6,6 +6,7 @@ import no.lukew.connect4.board.Piece;
 public class Connect4Solver {
 
     public int positionsSearched = 0;
+    private final int[] moveOrder = {3,2,4,1,5,0,6};
 
     public int score(Board board, Piece myPiece){
         positionsSearched += 1;
@@ -51,19 +52,25 @@ public class Connect4Solver {
         return 0;
     }
 
-    private int negamax(Board board, int depth){
+    private int negamax(Board board, int depth, int alpha, int beta){
         //if depth more than limit find score and return
         if(depth == 0 || board.isGameOver()){
             return score(board, board.getNextPiece());
         }
 
         int max = Integer.MIN_VALUE;
-        for (int i = 0; i < Board.BOARD_WIDTH; i++) {
-            if(!board.canPlaceInColumn(i)){
+        for (int i = 0; i < moveOrder.length; i++) {
+            if(!board.canPlaceInColumn(moveOrder[i])){
                 continue;
             }
-            Board newBoard = board.withMove(i);
-            int score = -negamax(newBoard, depth - 1);
+            Board newBoard = board.withMove(moveOrder[i]);
+            int score = -negamax(newBoard, depth - 1, -beta, -alpha);
+
+            alpha = Integer.max(alpha, score);
+
+            if(alpha >= beta){
+                break;
+            }
 
             if(score > max){
                 max = score;
@@ -81,7 +88,7 @@ public class Connect4Solver {
                 continue;
             }
             Board newBoard = board.withMove(i);
-            int score = -negamax(newBoard, 5);
+            int score = -negamax(newBoard, 7, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
             scores[i] = score;
         }
