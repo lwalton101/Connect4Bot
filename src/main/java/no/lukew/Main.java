@@ -22,13 +22,6 @@ public class Main {
         ArrayBoard board = new ArrayBoard();
 
         while(!board.isGameOver()){
-            System.out.println(board.toDebugString());
-            Scanner scanner = new Scanner(System.in);
-            int input = scanner.nextInt();
-            PlacementResult result = board.placePiece(input);
-            if(result != PlacementResult.Success){
-                System.out.println("Placement failed because: " + result.name());
-            }
 
             Connect4Solver solver = new Connect4Solver();
 
@@ -40,8 +33,16 @@ public class Main {
                 }
             }
             board.placePiece(bestColumn);
-
+            System.out.println("Playing column " + bestColumn);
             System.out.println("Searched " + solver.positionsSearched + " positions");
+
+            System.out.println(board.toDebugString());
+            Scanner scanner = new Scanner(System.in);
+            int input = scanner.nextInt();
+            PlacementResult result = board.placePiece(input);
+            if(result != PlacementResult.Success){
+                System.out.println("Placement failed because: " + result.name());
+            }
         }
         System.out.println(board.toDebugString());
         System.out.println(board.toNotation());

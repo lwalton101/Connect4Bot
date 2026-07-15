@@ -58,7 +58,7 @@ public class Connect4Solver {
             return score(board, board.getNextPiece());
         }
 
-        int max = Integer.MIN_VALUE;
+        int bestScore = Integer.MIN_VALUE;
         for (int j : moveOrder) {
             if (!board.canPlaceInColumn(j)) {
                 continue;
@@ -66,18 +66,15 @@ public class Connect4Solver {
             Board newBoard = board.withMove(j);
             int score = -negamax(newBoard, depth - 1, -beta, -alpha);
 
-            alpha = Integer.max(alpha, score);
+            bestScore = Math.max(bestScore, score);
+            alpha = Math.max(alpha, score);
 
-            if (alpha >= beta) {
+            if(alpha >= beta){
                 break;
-            }
-
-            if (score > max) {
-                max = score;
             }
         }
 
-        return max;
+        return bestScore;
     }
 
     public int[] evaluate(Board board){
@@ -88,7 +85,7 @@ public class Connect4Solver {
                 continue;
             }
             Board newBoard = board.withMove(i);
-            int score = -negamax(newBoard, 7, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int score = -negamax(newBoard, 5, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
             scores[i] = score;
         }
