@@ -59,20 +59,20 @@ public class Connect4Solver {
         }
 
         int max = Integer.MIN_VALUE;
-        for (int i = 0; i < moveOrder.length; i++) {
-            if(!board.canPlaceInColumn(moveOrder[i])){
+        for (int j : moveOrder) {
+            if (!board.canPlaceInColumn(j)) {
                 continue;
             }
-            Board newBoard = board.withMove(moveOrder[i]);
+            Board newBoard = board.withMove(j);
             int score = -negamax(newBoard, depth - 1, -beta, -alpha);
 
             alpha = Integer.max(alpha, score);
 
-            if(alpha >= beta){
+            if (alpha >= beta) {
                 break;
             }
 
-            if(score > max){
+            if (score > max) {
                 max = score;
             }
         }
