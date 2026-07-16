@@ -4,6 +4,7 @@ import no.lukew.connect4.board.ArrayBoard;
 import no.lukew.connect4.board.Board;
 import no.lukew.connect4.board.Piece;
 import no.lukew.connect4.board.PlacementResult;
+import no.lukew.connect4.solver.Connect4Solver;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,6 +22,20 @@ public class Main {
         ArrayBoard board = new ArrayBoard();
 
         while(!board.isGameOver()){
+
+            Connect4Solver solver = new Connect4Solver();
+
+            int[] scores = solver.evaluate(board);
+            int bestColumn = 0;
+            for (int i = 1; i < scores.length; i++) {
+                if (scores[i] > scores[bestColumn]) {
+                    bestColumn = i;
+                }
+            }
+            board.placePiece(bestColumn);
+            System.out.println("Playing column " + bestColumn);
+            System.out.println("Searched " + solver.positionsSearched + " positions");
+
             System.out.println(board.toDebugString());
             Scanner scanner = new Scanner(System.in);
             int input = scanner.nextInt();
