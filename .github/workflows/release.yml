@@ -34,12 +34,16 @@ jobs:
       - name: Build CLI fat JAR
         run: chmod +x gradlew && ./gradlew :connect4-cli:shadowJar
 
+      - name: Build UI jlink
+        run: chmod +x gradlew && ./gradlew :connect4-ui:jlinkZip
+
       - name: Prepare release files
         run: |
           mkdir release
 
           cp core/build/libs/*.jar release/
           cp cli/build/libs/*all.jar release/
+          cp ui/build/*.zip release/
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

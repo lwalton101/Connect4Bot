@@ -1,11 +1,20 @@
 plugins {
     application
     id("org.openjfx.javafxplugin") version "0.1.0"
+    id("org.beryx.jlink") version "3.1.3"
 }
 
 javafx {
     version = "26.0.1"
     modules = listOf("javafx.controls")
+}
+
+jlink {
+    imageZip = file("build/${project.name}-${project.version}.zip")
+
+    launcher {
+        name = "Connect4-ui"
+    }
 }
 
 application {
