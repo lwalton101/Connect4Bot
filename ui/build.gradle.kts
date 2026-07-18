@@ -1,3 +1,12 @@
+import org.gradle.internal.os.OperatingSystem
+
+val platform = when {
+    OperatingSystem.current().isWindows -> "windows"
+    OperatingSystem.current().isLinux -> "linux"
+    OperatingSystem.current().isMacOsX -> "macos"
+    else -> "unknown"
+}
+
 plugins {
     application
     id("org.openjfx.javafxplugin") version "0.1.0"
@@ -10,10 +19,10 @@ javafx {
 }
 
 jlink {
-    imageZip = file("build/${project.name}-${project.version}.zip")
+    imageZip = file("build/${project.name}-${project.version}-$platform.zip")
 
     launcher {
-        name = "Connect4-ui"
+        name = "connect4-ui"
     }
 }
 
