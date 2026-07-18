@@ -10,7 +10,14 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
 
     steps:
       - name: Checkout
@@ -20,24 +27,35 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 24
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+
       - name: Test
+        if: runner.os != 'Windows'
         run: chmod +x gradlew && ./gradlew test
 
+      - name: Test (Windows)
+        if: runner.os == 'Windows'
+        run: ./gradlew test
+
+
       - name: Build
-        run: chmod +x gradlew && ./gradlew build
+        run: ./gradlew build
+
 
       - name: Build CLI fat JAR
-        run: chmod +x gradlew && ./gradlew :connect4-cli:shadowJar
+        run: ./gradlew :connect4-cli:shadowJar
+
 
       - name: Build UI jlink
-        run: chmod +x gradlew && ./gradlew :connect4-ui:jlinkZip
+        run: ./gradlew :connect4-ui:jlinkZip
 
-      - name: Prepare release files
+
+      - name: Prepare release files (Linux)
+        if: runner.os == 'Linux'
         run: |
           mkdir release
 
@@ -45,7 +63,40 @@ jobs:
           cp cli/build/libs/*all.jar release/
           cp ui/build/*.zip release/
 
-      - name: Create GitHub Release
+
+      - name: Prepare release files (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          mkdir release
+
+          Copy-Item core/build/libs/*.jar release/
+          Copy-Item cli/build/libs/*all.jar release/
+          Copy-Item ui/build/*.zip release/
+
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.os }}
+          path: release/
+
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release
+
+
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: release/*
+          files: |
+            release/**/*.jar
+            release/**/*.zip
