@@ -21,8 +21,15 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
+          distribution: zulu
           java-version: 24
+          java-package: jdk
+
+      - name: Check Java
+        run: |
+          java -version
+          echo $JAVA_HOME
+          ls $JAVA_HOME/jmods | head
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
