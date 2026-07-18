@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="no.lukew.connect4.ui.MainMenuController">
+    <Label style="-fx-font-size: 35px;" text="Connect 4">
+
+    </Label>
+    <VBox alignment="CENTER" spacing="30">
+        <Button text="Singleplayer" onMouseClicked="#handleSingleplayerButton"/>
+        <Button text="Multiplayer" />
+        <Button text="Settings" />
+        <Button text="Exit" />
+    </VBox>
+</VBox>
