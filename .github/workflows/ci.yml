@@ -23,6 +23,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 24
+          java-package: jdk
 
       - name: Check Java
         run: |
