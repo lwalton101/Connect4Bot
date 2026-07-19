@@ -11,6 +11,6 @@
         <Button text="Singleplayer" onMouseClicked="#handleSingleplayerButton"/>
         <Button text="Multiplayer" />
         <Button text="Settings" />
-        <Button text="Exit" />
+        <Button text="Exit" onMouseClicked="#handleExitButton"/>
     </VBox>
 </VBox>
