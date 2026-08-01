@@ -47,7 +47,7 @@ public class GameController implements Initializable {
                 board.add(cell, col, row);
             }
 
-            ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> updateCellSize();
+            ChangeListener<Number> resizeListener = (_, _, _) -> updateCellSize();
             board.widthProperty().addListener(resizeListener);
             board.heightProperty().addListener(resizeListener);
         }

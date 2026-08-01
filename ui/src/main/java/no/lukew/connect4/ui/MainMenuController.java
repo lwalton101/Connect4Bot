@@ -20,12 +20,12 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
-    private void handleSingleplayerButton(MouseEvent mouseEvent) throws IOException {
+    private void handleSingleplayerButton() throws IOException {
         startGame(GameMode.Singleplayer);
     }
 
     @FXML
-    private void handleMultiplayerButton(MouseEvent mouseEvent) throws IOException {
+    private void handleMultiplayerButton() throws IOException {
         startGame(GameMode.Multiplayer);
     }
 
@@ -33,7 +33,7 @@ public class MainMenuController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
         loader.load();
         Parent root = loader.getRoot();
-        GameController controller = loader.<GameController>getController();
+        GameController controller = loader.getController();
         controller.setGameMode(gameMode);
 
         Scene scene = new Scene(root, 800,600);
@@ -46,7 +46,7 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
-    private void handleExitButton(MouseEvent mouseEvent) {
+    private void handleExitButton() {
         Platform.exit();
         System.exit(0);
     }

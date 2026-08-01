@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-
 <VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="no.lukew.connect4.ui.GameController">
     <Label fx:id="gameModeLabel" style="-fx-font-size: 35px;" text="You are playing" />
     <GridPane fx:id="board"
