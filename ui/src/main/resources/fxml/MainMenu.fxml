@@ -9,7 +9,7 @@
     </Label>
     <VBox alignment="CENTER" spacing="30">
         <Button text="Singleplayer" onMouseClicked="#handleSingleplayerButton"/>
-        <Button text="Multiplayer" />
+        <Button text="Multiplayer" onMouseClicked="#handleMultiplayerButton"/>
         <Button text="Settings" />
         <Button text="Exit" onMouseClicked="#handleExitButton"/>
     </VBox>

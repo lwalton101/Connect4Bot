@@ -21,11 +21,26 @@ public class MainMenuController implements Initializable {
 
     @FXML
     private void handleSingleplayerButton(MouseEvent mouseEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Game.fxml"));
-        Scene scene = new Scene(root);
+        startGame(GameMode.Singleplayer);
+    }
+
+    @FXML
+    private void handleMultiplayerButton(MouseEvent mouseEvent) throws IOException {
+        startGame(GameMode.Multiplayer);
+    }
+
+    private void startGame(GameMode gameMode) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
+        loader.load();
+        Parent root = loader.getRoot();
+        GameController controller = loader.<GameController>getController();
+        controller.setGameMode(gameMode);
+
+        Scene scene = new Scene(root, 800,600);
 
         Stage stage = new Stage();
         stage.setScene(scene);
+
 
         stage.show();
     }
