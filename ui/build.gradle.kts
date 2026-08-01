@@ -15,7 +15,7 @@ plugins {
 
 javafx {
     version = "26.0.1"
-    modules = listOf("javafx.controls")
+    modules = listOf("javafx.controls", "javafx.fxml")
 }
 
 jlink {
